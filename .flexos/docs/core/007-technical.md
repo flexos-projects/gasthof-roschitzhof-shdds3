@@ -1,99 +1,64 @@
 ---
-id: "007-technical"
-title: "Technical Architecture"
+id: technical
+title: 'Technical Specification & Architecture'
+description: 'Details the technology stack, architecture, APIs, and key packages for the project implementation.'
 type: doc
 subtype: core
 status: draft
 sequence: 7
-tags: [technical, architecture, stack, deployment]
+tags:
+  - technical
+  - architecture
+  - stack
+createdAt: '2024-05-21T10:00:00Z'
+updatedAt: '2024-05-21T10:00:00Z'
 ---
 
-# Technical Architecture
+## 1. Introduction
 
-> How the product is built, deployed, and maintained. The engineer's reference document.
+This document outlines the technical architecture and technology stack for the Gasthof Roschitzhof Digital Relaunch. The chosen technologies are modern, robust, and selected to deliver a high-performance, maintainable, and scalable solution that meets all the requirements outlined in the [Project Vision](.flexos/docs/core/001-vision.md) and [Features](.flexos/docs/core/002-features.md) documents.
 
-## Tech Stack
+## 2. Core Technology Stack
 
-| Layer | Technology | Why |
-|-------|-----------|-----|
-| Framework | Nuxt 4 | Full-stack Vue, SSR, file-based routing |
-| Database | Firestore | Real-time, serverless, scales automatically |
-| Auth | Firebase Auth | Email/password, social login, session management |
-| Hosting | Vercel | Edge deployment, preview deploys, serverless functions |
-| Storage | Vercel Blob | File uploads, images, assets |
-| Styling | UnoCSS / Tailwind | Utility-first, design token integration |
+We will adopt a modern Jamstack architecture leveraging the Vue.js ecosystem and Firebase for backend services. This provides excellent performance, security, and developer experience.
 
-## Architecture Overview
+*   **Framework (`framework`): Nuxt 4**
+    *   **Rationale:** Nuxt is a powerful Vue.js framework that provides server-side rendering (SSR) and static site generation (SSG) capabilities out of the box. This is crucial for SEO performance and fast initial page loads. Its file-based routing and modular architecture will streamline development.
 
-Describe the high-level architecture — client/server split, data flow, caching strategy.
+*   **Database (`database`): Firebase Firestore**
+    *   **Rationale:** As a NoSQL document database, Firestore offers the flexibility needed for our data models (defined in the [Database Schema](.flexos/docs/core/004-database.md)). Its real-time capabilities are a bonus for future features, and its integration with the Firebase ecosystem is seamless.
 
-### Client
+*   **Authentication (`auth`): Firebase Authentication**
+    *   **Rationale:** Provides a secure, easy-to-implement solution for user signup, login, and session management. It integrates directly with Firestore for user profiles and security rules.
 
-- Nuxt 4 SPA with SSR for public pages
-- Vue 3 Composition API throughout
-- State management via composables (not Pinia unless complex)
-- File-based routing with middleware for auth gates
+*   **Hosting & Storage (`hosting`): Firebase Hosting & Cloud Storage**
+    *   **Rationale:** Firebase Hosting offers a global CDN, automatic SSL, and simple deployment, ensuring the site is fast and secure worldwide. Cloud Storage will be used to host user-uploaded content, GPX files, and high-resolution imagery.
 
-### Server
+## 3. Frontend Development
 
-- Nuxt server routes (server/api/)
-- Firebase Admin SDK for privileged operations
-- Server-side rendering for SEO-critical pages
-- Edge functions for API routes
+*   **Key Packages (`keyPackages`):**
+    *   **State Management: Pinia:** The official state management library for Vue. It's simple, powerful, and provides a centralized store for managing application state, such as user authentication status or booking form data.
+    *   **UI Components: Nuxt UI / Tailwind CSS:** We will use Tailwind CSS for our utility-first styling approach, allowing for rapid development of the custom "Alpine Modern" design. Nuxt UI will provide a set of accessible, unstyled components (headless UI) that we can style according to the [Design System](.flexos/docs/core/06-design.md).
+    *   **Utilities: VueUse:** A comprehensive collection of utility functions that will simplify tasks like handling user interactions, managing browser features, and more.
+    *   **Firebase Integration: `@nuxtjs/firebase`:** The official Nuxt module for integrating the Firebase suite, simplifying initialization and usage of Auth, Firestore, and Storage within the Nuxt application.
 
-### Data Flow
+## 4. API Integrations
 
-```
-Client → Nuxt Server Routes → Firestore
-         ↕                     ↕
-      Firebase Auth         Cloud Functions (if needed)
-```
+To power the dynamic features of the site, we will integrate with several third-party APIs.
 
-## API Routes
+*   **Google Maps API:** Will be used to display the interactive map on the `/contact` page and to power the "Get Directions" functionality.
+*   **Instagram Graph API:** To fetch and display a curated feed of images tagged at Gasthof Roschitzhof for the "Social Proof" section. This will require setting up a Facebook Developer App and obtaining the necessary permissions.
+*   **Ratings & Reviews APIs (Yelp / Steiermark.com):** Research is required to determine the feasibility and availability of APIs from these platforms. The goal is to programmatically fetch the current average rating and recent reviews to display in the "Trust Bar" and testimonial slider. If direct APIs are unavailable, a web scraping solution or manual entry into our `testimonials` collection will be considered as a fallback.
 
-List every API endpoint the product needs:
+## 5. Development & Deployment Workflow
 
-| Method | Path | Purpose | Auth |
-|--------|------|---------|------|
-| POST | /api/auth/login | Authenticate user | No |
-| GET | /api/[resource] | List resources | Yes |
-| POST | /api/[resource] | Create resource | Yes |
-| (continue...) | | | |
+*   **Source Control:** The project will be hosted on GitHub, using a standard Git workflow with feature branches, pull requests, and code reviews.
+*   **CI/CD:** We will set up GitHub Actions to automate our deployment process. Pushing to the `main` branch will trigger a build of the Nuxt application and deploy it directly to Firebase Hosting.
+*   **Environment Variables:** Sensitive information like API keys and Firebase configuration will be managed using environment variables (`.env` files) and will not be committed to the repository.
 
-## Authentication
+## 6. Performance & SEO Strategy
 
-- **Method:** Firebase Auth (email/password + Google OAuth)
-- **Session:** HTTP-only cookie with Firebase session token
-- **Middleware:** `auth.ts` middleware checks session on protected routes
-- **Token refresh:** Automatic via Firebase SDK
-
-## Environment Variables
-
-| Variable | Purpose | Required |
-|----------|---------|----------|
-| `FIREBASE_PROJECT_ID` | Firebase project | Yes |
-| `FIREBASE_CLIENT_EMAIL` | Service account | Yes |
-| `FIREBASE_PRIVATE_KEY` | Service account | Yes |
-| (continue...) | | |
-
-## Deployment
-
-- **Production:** Vercel, auto-deploy from `main` branch
-- **Preview:** Vercel preview deploys on every PR
-- **Database:** Firestore production instance
-- **CI/CD:** GitHub Actions for linting, type-checking, tests
-
-## Performance Targets
-
-- **First Contentful Paint:** < 1.5s
-- **Time to Interactive:** < 3s
-- **Lighthouse Score:** > 90 (performance, accessibility)
-- **API Response Time:** < 200ms (p95)
-
-## Security Considerations
-
-- All API routes validate input (Zod schemas)
-- Firestore security rules enforce per-document access
-- CORS configured for production domain only
-- Rate limiting on auth endpoints
-- No secrets in client bundle
+*   **Server-Side Rendering (SSR):** Nuxt will be configured for SSR to ensure search engine crawlers receive fully rendered HTML, maximizing SEO effectiveness.
+*   **Image Optimization:** All images will be automatically optimized (compressed, resized, and converted to modern formats like WebP) using Nuxt's built-in image optimization tools.
+*   **Lazy Loading:** Images and non-critical components below the fold will be lazy-loaded to improve the initial page load time, especially on mobile devices.
+*   **Structured Data:** We will implement JSON-LD structured data (Schema.org) for restaurants, hotels, and events to enhance our appearance in search engine results pages (SERPs).

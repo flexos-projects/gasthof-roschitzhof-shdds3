@@ -1,111 +1,69 @@
 ---
-id: "006-design"
-title: "Design System"
+id: design
+title: 'Design System & Style Guide'
+description: 'Outlines the visual language, color palette, typography, and overall aesthetic for the Alpine Modern design.'
 type: doc
 subtype: core
 status: draft
 sequence: 6
-tags: [design, brand, colors, typography, components]
+tags:
+  - design
+  - style-guide
+  - ui-ux
+createdAt: '2024-05-21T10:00:00Z'
+updatedAt: '2024-05-21T10:00:00Z'
 ---
 
-# Design System
+## 1. Design Philosophy: Alpine Modern
 
-> The visual identity and component language of the product. Everything a designer or developer needs to build consistent UI.
+The visual identity for the Gasthof Roschitzhof relaunch is encapsulated by the term "Alpine Modern." This is a fusion of rustic authenticity and clean, high-performance design. It's about communicating the warmth and tradition of a Styrian Gasthof through a modern, efficient, and visually stunning digital lens.
 
-## Brand Voice
+*   **Vibe:** Rustic Elegance, Vibrant, Efficient. The design should feel robust and trustworthy, yet also fresh and inviting. We avoid sterile minimalism; instead, we use clean lines to frame rich, high-quality photography and videography.
+*   **Core Principles:**
+    *   **Content-First:** The design serves the content. Large, immersive images and videos of the landscape, food, and atmosphere are the heroes.
+    *   **Clarity and Intent:** Every element has a purpose. Navigation is intuitive, and calls to action are clear and compelling.
+    *   **Authenticity:** We use real photography and genuine testimonials. The design should reflect the true character of the Gasthof, not a generic template.
 
-How does this product speak? Describe the tone, personality, and communication style:
+## 2. Color Palette
 
-- **Tone:** (professional, casual, playful, authoritative?)
-- **Voice:** (first person, second person, third person?)
-- **Personality traits:** (3-4 adjectives that describe the brand)
-- **Do:** (examples of on-brand copy)
-- **Don't:** (examples of off-brand copy)
+The color palette is inspired by the natural environment of the Soboth region and the warmth of the Gasthof itself.
 
-## Color System
+*   **Primary Color (`primaryColor`): `#ef4444` (Vibrant Red)**
+    *   **Usage:** This is our action color. Used for primary buttons ("Book a Table"), key highlights, and brand accents. It's energetic and confident, reflecting the vibrancy of both the local culture and the motorcycling community.
 
-### Primary Palette
+*   **Accent Color (`accentColor`): `#FFD700` (Gold)**
+    *   **Usage:** Used sparingly for secondary CTAs, special highlights, or to denote premium features. It complements the red and adds a touch of elegance and quality, reminiscent of golden hour light or a perfectly cooked schnitzel.
 
-- **Primary:** #000000 (main brand color, used for CTAs and key elements)
-- **Accent:** #000000 (complementary color for highlights and secondary actions)
+*   **Neutral Dark (`neutralDark`): `#1a202c` (Charcoal)**
+    *   **Usage:** The primary color for all body text and dark UI elements. It provides excellent contrast against light backgrounds, ensuring readability. It's a softer, more modern alternative to pure black.
 
-### Neutral Palette
+*   **Neutral Light (`neutralLight`): `#f8fafc` (Off-White)**
+    *   **Usage:** The primary background color for most sections. It's clean, airy, and provides a neutral canvas that allows the photography and primary colors to stand out.
 
-- **Dark:** #000000 (text, headings)
-- **Medium:** #000000 (secondary text, borders)
-- **Light:** #000000 (backgrounds, cards)
-- **White:** #ffffff (page background)
+## 3. Typography
 
-### Semantic Colors
+We will use a single, versatile font family to maintain consistency and improve performance.
 
-- **Success:** #22c55e
-- **Warning:** #f59e0b
-- **Error:** #ef4444
-- **Info:** #3b82f6
+*   **Font Family (`fontFamily`): Inter**
+    *   **Why Inter?** It's a highly legible sans-serif font designed specifically for user interfaces. It works beautifully at all sizes, from large, impactful headlines to small, detailed micro-copy.
+    *   **Headlines (H1, H2):** Font weight will be Bold (700) or Extra Bold (800). Example: `"Your Basecamp on the Soboth Pass."`
+    *   **Sub-Headlines (H3):** Font weight will be Semi-Bold (600).
+    *   **Body Copy:** Font weight will be Regular (400). Sized for optimal readability on both desktop and mobile screens.
 
-### Color Usage
+## 4. UI Components & Patterns
 
-- Primary is used for: CTAs, links, active states, primary navigation
-- Accent is used for: secondary buttons, highlights, badges
-- Never use more than 3 colors on a single component
+Consistency in UI elements is key to a predictable and user-friendly experience.
 
-## Typography
+*   **Buttons:**
+    *   **Primary:** Solid background (`primaryColor`), white text, subtle hover effect (slight darkening).
+    *   **Secondary:** Ghost button style. Transparent background with a `primaryColor` or `accentColor` border and text. The background fills with color on hover.
 
-### Font Stack
+*   **Cards:**
+The "Choose Your Adventure" cards will be the primary navigation pattern. They will feature a high-quality background image with a dark, translucent overlay to ensure the white text on top is legible. A subtle zoom effect on the image on hover will add a touch of interactivity.
 
-- **Headings:** (font family, weights used)
-- **Body:** (font family, weights used)
-- **Mono:** (font family, for code/data)
+*   **Navigation (`navigationPattern`):**
+    *   **Desktop:** A clean, traditional navigation bar at the top with a sticky-on-scroll behavior.
+    *   **Mobile:** The signature "Thumb Zone" sticky bottom bar (`bottom-tabs`) with icons for the four most critical actions: 📞 Call, 🗺️ Map, 📅 Book, 🍔 Menu. This is a core part of the mobile-first UX strategy.
 
-### Scale
-
-| Level | Size | Weight | Line Height | Use |
-|-------|------|--------|-------------|-----|
-| H1 | 2.5rem | 700 | 1.2 | Page titles |
-| H2 | 2rem | 600 | 1.3 | Section headers |
-| H3 | 1.5rem | 600 | 1.4 | Card titles |
-| Body | 1rem | 400 | 1.6 | Paragraphs |
-| Small | 0.875rem | 400 | 1.5 | Captions, labels |
-
-## Component Patterns
-
-### Buttons
-
-- Primary: filled with primary color, white text
-- Secondary: outlined with primary color
-- Ghost: text only, no background
-- Sizes: sm (32px), md (40px), lg (48px)
-- All buttons have minimum 44px touch target on mobile
-
-### Cards
-
-- Background: white (light mode) / dark neutral (dark mode)
-- Border radius: 12px
-- Padding: 16px (mobile), 24px (desktop)
-- Shadow: subtle on hover
-
-### Forms
-
-- Labels above inputs
-- Inline validation messages below fields
-- Input height: 44px minimum (mobile touch target)
-- Focus state: primary color ring
-
-## Layout Patterns
-
-- **Desktop:** Sidebar (240px) + main content area
-- **Tablet:** Collapsible sidebar + full-width content
-- **Mobile:** Bottom navigation (56px) + full-width content
-- **Max content width:** 1200px, centered
-
-## Spacing System
-
-Base unit: 4px. Use multiples: 4, 8, 12, 16, 24, 32, 48, 64, 96.
-
-## Accessibility
-
-- Minimum contrast ratio: 4.5:1 (AA) for body text, 3:1 for large text
-- Focus indicators on all interactive elements
-- Touch targets minimum 44x44px
-- Screen reader support for all dynamic content
-- Reduced motion support via `prefers-reduced-motion`
+*   **Imagery:**
+All photography must be professional, high-resolution, and authentic. We will focus on capturing the golden hour light, the texture of the food, and the genuine atmosphere of the Gasthof. Videography for the hero loop will be smooth, slow-motion, and cinematic.

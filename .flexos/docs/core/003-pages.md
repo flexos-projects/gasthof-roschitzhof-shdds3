@@ -1,79 +1,95 @@
 ---
-id: "003-pages"
-title: "Pages & Navigation"
+id: pages
+title: 'Site Architecture: Pages & Content'
+description: 'An overview of the website sitemap, detailing the purpose, content sections, and key features of each page.'
 type: doc
 subtype: core
 status: draft
 sequence: 3
-tags: [pages, navigation, sitemap, ux]
+tags:
+  - architecture
+  - pages
+  - core
+createdAt: '2024-05-21T10:00:00Z'
+updatedAt: '2024-05-21T10:00:00Z'
 ---
 
-# Pages & Navigation
+## 1. Introduction
 
-> Every screen in the product, how users move between them, and what each page does. This is the blueprint for the user experience.
+This document outlines the sitemap and page structure for the Gasthof Roschitzhof Digital Relaunch. Each page is designed with a specific purpose and audience in mind, contributing to a cohesive and intuitive user journey. The architecture is built around the persona-driven navigation introduced in the [Features Document](.flexos/docs/core/002-features.md).
 
-## Site Map
+## 2. Public Pages
 
-The complete URL structure of the application. Include public and authenticated routes.
+These pages are accessible to all visitors and form the core of the public-facing website.
 
-```
-/                       Landing page (public)
-/login                  Authentication (public)
-/signup                 Registration (public)
-/dashboard              Main app view (auth required)
-/settings               User settings (auth required)
-/[resource]/[id]        Detail views (auth required)
-```
+### 2.1. Homepage (`/index`)
+The homepage is the digital front door and the most critical marketing asset. Its purpose is to captivate visitors within seconds, communicate the unique value proposition, and guide them to the most relevant content path.
+*   **Route:** `/`
+*   **Key Sections:**
+    *   **Alpine Hero Showcase:** Full-screen ambient video loop.
+    *   **Dynamic Trust Bar:** Live ratings and opening hours.
+    *   **Headline & CTAs:** "Your Basecamp on the Soboth Pass." with "Book a Table" and "Stay Overnight" buttons.
+    *   **Choose Your Adventure Grid:** The primary navigation with cards for Biker, Gourmand, and Family.
+    *   **Social Proof:** Curated Instagram feed and testimonial slider.
+    *   **Comprehensive Footer:** With one-tap contact, map, and certification badges.
 
-## Page Inventory
+### 2.2. Biker's Hub (`/bikers`)
+This dedicated landing page serves the primary motorcyclist persona. It acts as a resource hub, providing tangible value beyond just accommodation and food.
+*   **Route:** `/bikers`
+*   **Key Sections:**
+    *   **Biker-Themed Hero:** A powerful image or short video of motorcycles on the Soboth pass.
+    *   **Amenities List:** Clearly itemizes biker-friendly features: secure garage, drying room, tool workshop, etc.
+    *   **GPX Route Maps:** An interactive map showcasing local routes. Each route will be a downloadable GPX file from the `gpx_routes` collection, as defined in the [Database Schema](.flexos/docs/core/004-database.md).
+    *   **Biker Testimonials:** A filtered view of testimonials from other riders.
 
-For each page, document:
+### 2.3. Gourmand's Delights & Menu (`/menu`)
+This page showcases the culinary heart of the Gasthof, focusing on the "zero food miles" philosophy and farm-to-table experience.
+*   **Route:** `/menu`
+*   **Key Sections:**
+    *   **Culinary Story:** A brief narrative about the organic farm, fresh trout pond, and commitment to local sourcing.
+    *   **Dynamic Daily Menu:** Fetches and displays items from the `menu_items` collection. The menu will be easy to update via a CMS, as described in the [Admin Update Flow](.flexos/docs/core/005-flows.md).
+    *   **Food Gallery:** High-quality, professional photography of the signature dishes.
+    *   **Booking CTA:** A persistent "Book Your Table" button.
 
-### Landing Page (`/`)
+### 2.4. Family Adventures (`/family`)
+This page is tailored for families planning a visit, highlighting the safety, fun, and nature-oriented aspects of the Roschitzhof.
+*   **Route:** `/family`
+*   **Key Sections:**
+    *   **Family-Focused Hero:** An image of a family enjoying the property.
+    *   **Facilities Showcase:** Details on the playground, kid-friendly menu options, and high chairs.
+    *   **Local Activities:** Information on nearby nature trails, swimming spots, and family-friendly excursions.
 
-- **Purpose:** First impression, conversion
-- **Auth required:** No
-- **Key sections:** Hero, features, social proof, CTA
-- **Data sources:** Static content, testimonials
-- **Actions available:** Sign up, learn more, view demo
-- **Mobile behavior:** Stacked layout, sticky CTA
+### 2.5. Booking & Reservations (`/book`)
+A functional, streamlined page for converting user interest into confirmed bookings. It will handle both table and room reservations.
+*   **Route:** `/book`
+*   **Key Sections:**
+    *   **Reservation Type Selector:** Toggles between "Book a Table" and "Stay Overnight."
+    *   **Booking Forms:** Simple, intuitive forms with calendar/time pickers and guest counters. Data will be saved to the `bookings` collection.
+    *   **Confirmation Step:** A summary of the booking details before final submission.
 
-### Dashboard (`/dashboard`)
+### 2.6. Contact & Location (`/contact`)
+A simple, utility-focused page providing all necessary contact and location information.
+*   **Route:** `/contact`
+*   **Key Sections:**
+    *   **Contact Details:** Large, clickable phone number (+43 3460 362) and email address (a.strutz1@gmx.at).
+    *   **Interactive Map:** An embedded Google Map centered on Soboth 162 with a "Get Directions" button.
+    *   **Dynamic Hours:** Live display of today's opening hours.
 
-- **Purpose:** Main workspace after login
-- **Auth required:** Yes
-- **Key sections:** (describe the primary view)
-- **Data sources:** (which collections/APIs feed this page)
-- **Actions available:** (what can users do here)
-- **Mobile behavior:** (how does it adapt)
+## 3. Authenticated Pages
 
-(Continue for each page...)
+These pages are accessible only to logged-in users.
 
-## User Journeys
+### 3.1. Login / Signup (`/auth`)
+The gateway for user authentication, providing access to personalized features.
+*   **Route:** `/auth`
+*   **Key Sections:**
+    *   Login & Signup forms.
+    *   "Forgot Password" functionality.
 
-### First-Time User Journey
-
-Walk through what a brand new user experiences from landing page to first "aha moment." Every click, every page transition, every loading state.
-
-1. User lands on `/` → sees hero + CTA
-2. Clicks "Get Started" → navigates to `/signup`
-3. (continue step by step...)
-
-### Core Action Journey
-
-The primary thing users come back to do. The happy path through the main feature.
-
-### Settings/Admin Journey
-
-How users configure their account, manage settings, handle billing.
-
-## Navigation Patterns
-
-- **Desktop:** (sidebar, top nav, breadcrumbs?)
-- **Mobile:** (bottom tabs, hamburger, swipe?)
-- **Transitions:** (page transitions, loading states)
-- **Deep linking:** (which pages support direct URLs)
-
-## Authentication Gates
-
-Which pages are public vs authenticated? What happens when an unauthenticated user hits a protected route?
+### 3.2. User Settings & Profile (`/settings`)
+A private dashboard for registered users to manage their information and preferences.
+*   **Route:** `/settings`
+*   **Key Sections:**
+    *   Profile editor (name, email, password).
+    *   Booking history list (references the `bookings` collection).
+    *   Saved GPX routes.
